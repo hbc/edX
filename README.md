@@ -20,12 +20,15 @@ Course materials for the [edX Data Analysis for Genomics](https://courses.edx.or
 * Shannan Ho Sui
 * Meeta Mistry
 * Radhika Khetani
+* Brad Chapman (building the VM)
+* Aaron Quinlan (Gemini tutorial)
+* Jessica Chong (Gemini case studies)
 
 ### Attributions
 
-This course borrows heavily from the FreeBayes tutorial, courses from UC Davis, and other online courses. Detailed list to follow as we finalize the contents.
+This course borrows heavily from the [FreeBayes tutorial](http://clavius.bc.edu/~erik/CSHL-advanced-sequencing/freebayes-tutorial.html) developed by Erik Garrison and course materials from [UC Davis](http://training.bioinformatics.ucdavis.edu/), and other online courses such as the [Software Carpentry materials](http://software-carpentry.org/). 
 
 ### License
 
-Course materials are made available under the [CC BY 3.0 license](http://creativecommons.org/licenses/by/3.0/). 
+Course materials are made available under an [MIT license](http://opensource.org/licenses/MIT). 
 
