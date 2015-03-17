@@ -85,7 +85,7 @@ Finally, connect the shared folder to the newly created directory:
 
 	sudo mount -t vboxsf SHARENAME ngs
 
-where `SHARENAME` is the folder share name you picked when setting up the VirtualBox shared folders. Try copying something into that shared folder on your desktop or laptop, then check if you can see it from the terminal:
+where `SHARENAME` is the folder share name you picked when setting up the VirtualBox shared folders (do not include the full path; the folder name alone will suffice). Try copying something into that shared folder on your desktop or laptop, then check if you can see it from the terminal:
 
 	ls -alih ngs/
 
@@ -94,7 +94,7 @@ where `SHARENAME` is the folder share name you picked when setting up the Virtua
 > mkdir ./data  
 > cd ./data  
 > wget http://goo.gl/bq1QQQ  
-> samtools sort -n NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.0121211.bam temp.bam  
+> samtools sort -n NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.0121211.bam temp  
 > bedtools bamtofastq -i temp.bam -fq reads.end1.fq -fq2 reads.end2.fq 2> error.log  
 > 
 > Adding noise using [Sherman](http://www.bioinformatics.babraham.ac.uk/projects/download.html#sherman):  
@@ -103,10 +103,10 @@ where `SHARENAME` is the folder share name you picked when setting up the Virtua
 > Sherman -l 101 -n 400000 --genome_folder . -pe -cr 0 -q 40 --fixed_length_adapter 40  
 > 
 > Fixed what Sherman does to the reads:  
-	> sed 's/_R1/\/1' simulated_1.fastq > simulated_1.fixed  
-	> sed 's/_R2/\/2' simulated_1.fastq > simulated_1.fixed  
+	sed 's/_R1/\/1/' simulated_1.fastq > simulated_1.fixed  
+	sed 's/_R2/\/2/' simulated_2.fastq > simulated_2.fixed  
 > cat simulated_1.fixed >> reads.end1.fq  
-> cat simulated_1.fixed >> reads.end1.fq  
+> cat simulated_2.fixed >> reads.end2.fq  
 >
 > For the course we need to package those reads and make them available from _somewhere_.
 
@@ -129,7 +129,7 @@ Reads from the FASTQ file need to be mapped to a reference genome in order to id
 3. Trimming or filtering low-quality reads
 4. Recalculating quality statistics and review diagnostic plots on filtered data
 
-This tends to be an interative process, and you will have to make your own decisions on what you consider acceptable quality. For the most part sequencing data tends to be good enough that it won’t need any filtering or trimming as modern aligners will _soft-clip_ reads that do not perfectly align to the reference genome — we will show you examples of this during a later module. 
+This tends to be an interactive process, and you will have to make your own decisions on what you consider acceptable quality. For the most part sequencing data tends to be good enough that it won’t need any filtering or trimming as modern aligners will _soft-clip_ reads that do not perfectly align to the reference genome — we will show you examples of this during a later module. 
 
 > Use own slides and materials from [UC Davis](http://training.bioinformatics.ucdavis.edu/docs/2014/09/september-2014-workshop/_downloads/Monday_JF_QAI_lecture.pdf)
 
@@ -151,7 +151,7 @@ For a quick assessment of read quality you will want to stick to standard tools 
 	fastqc reads.end1.fq
 	fastqc reads.end2.fq
 
-In order to look at the FastQC output you will need to copy the html report file to the directory you mounted from your host environment previously if you are not already working out of `/mnt/ngs/`. Navigate to the shared folder on your host OS and take a look at the HTML reports with a web browser (`reads.end1_fastqc`). 
+In order to look at the FastQC output you will need to copy the html report file to the directory you mounted from your host environment previously if you are not already working out of `/mnt/ngs/`. When you copy over remember to add `sudo` to the command. Navigate to the shared folder on your host OS and take a look at the HTML reports with a web browser (`reads.end1_fastqc`). 
 
 > Walk them through the FASTQC report as in the regular course. Overall quality, number of reads. Differences in paired read (1 vs 2 overall quality). Highlight adapter that seems to be present.  
 > Walk them through the [Core conference call plots](http://bioinfo-core.org/index.php/9th_Discussion-28_October_2010) 
@@ -174,9 +174,10 @@ Keep track of where the output ends up if not mentioned explicitly in the comman
 
 For our data set we will trim off a standard adapter from the 3'-ends of our reads. Cutadapt can handle paired-end reads in one pass (see the documentation for details). While you can run cutadapt on the paired reads separately it is highly recommended to process both files at the same time so cutadapt can check for problems in the input data. The `-p` / `--paired-output` flag ensures that cutadapt checks for proper pairing of your data and will raise an error if read names in the files do not match. It also ensures that the paired files remain synchronized if the filtering and trimming ends up in one read being discarded -- cutadapt will remove the matching paired read from the second file, too.
 
-	cutadapt -a CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -o out1.fastq -p out2.fastq reads.1.fastq reads.2.fastq > cutadapt.log
+	cutadapt -a CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -o out1.fastq -p out2.fastq reads.end1.fastq reads.end2.fastq > cutadapt.log
 
 > This currently doesn't work -- only 10% of the adapter sequence gets removed. Need to troubleshoot with Rory.
+> The adaptor sequence is quite long to type out
 
 cutadapt is very flexible and can handle multiple adapters in one pass (in the same or different position), take a look at the excellent documentation. It is even possible to trim more than one adapter from a given read though at this point you might want to go back to the experimental design.
 
@@ -234,7 +235,7 @@ For the actual alignment we will need our chr20 reference sequence and the trimm
 
 	cd ..  
 	mkdir alignment
-	mv data/final*.fastq alignment/
+	mv data/final/final*.fastq alignment/
 	mv data/chr20.fa alignment/
 	cd alignment
 
@@ -246,7 +247,7 @@ With the index in place we can align the reads using BWA's _Maximal Exact Match_
 
 > Confirm that BWA creates SAM output. bwa  # version?
 	
-	bwa mem -M chr20.fa final1.fq final2.fq 2> bwa.err > na12878.sam
+	bwa mem -M chr20.fa final1.fastq final2.fastq > bwa.err > na12878.sam
 	ls -alih
 
 > Take a look at the output file. Note it’s size relative to FASTQ. How long did it take to run? Now extrapolate to how long you would expect this tool to run when mapping to the entire genome (approximately). What about using whole genome data instead of whole exome?
