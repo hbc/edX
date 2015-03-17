@@ -518,14 +518,14 @@ Let's start by testing whether the variants we called are present in [dbSNP](htt
 
 	cd ..
 	mkdir gemini
-	cp variation/na12878_q20* gemini/
+	cp variants/na12878_q20* gemini/
 	cd gemini
 	wget XXX
 	tabix dbsnp.138.chr20.vcf.gz
 
 We will once again use bcftools, this time to associate the variants we called with the entries in dbSNP via the [annotate command](http://samtools.github.io/bcftools/bcftools.html#annotate):
 
-	bcftools annotate -c ID -a dbSNP.138.chr20.vcf.gz na12878_q20.vcf.gz > na12878_annot.vcf
+	bcftools annotate -c ID -a dbsnp.138.chr20.vcf.gz na12878_q20.vcf.gz > na12878_annot.vcf
 
 Explore the file -- the previous 'unknown IDs' (the '.' annotation) has in all cases been replaced by an `rs` identifier that you can look up in the dbSNP database. This is not terribly surprising: NA12878 is one of the best-sequenced genomes, and short of true sequencing errors all variants are bound to be in public databases. An easy way to confirm that impression is once again via bcftools:
 
