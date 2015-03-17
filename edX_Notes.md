@@ -279,7 +279,7 @@ This latter feature comes in handy when looking for structural variation, but he
 In order to be called a 'duplicate' reads need to match on the sequence name, strand, and where the 5' end of the read would end up on the genomic sequence if the read is fully aligned, i.e., when ignoring any clipped reads:
 
 	samblaster --version
-	samblaster -i na12878.sam -o na12879_marked.sam
+	samblaster -i na12878.sam -o na12878_marked.sam
 
 Lastly, to speed up processing we will need to use SAMtools to convert the SAM file to a BAM file, allowing subsequent methods and viewers to navigate the data more easily.
 
@@ -288,7 +288,7 @@ Lastly, to speed up processing we will need to use SAMtools to convert the SAM f
 
 As a sidenote, samblaster and many other tools can read from standard input and write to standard out and can thus be easily inserted into a very simple 'pipeline'. For example:
 
-	bwa mem -M chr20.fa final1.fq final2.fq | samblaster | samtools view -Sb - > na12878.bam
+	bwa mem -M chr20.fa final1.fastq final2.fastq | samblaster | samtools view -Sb - > na12878.bam
 
 This runs the bwa-mem alignment, pipes the resulting file directly into samblaster which passes the results on to samtools for conversion into a BAM file. It avoids writing multiple large files to disk and speeds up the conversion quite a bit.
 
@@ -298,7 +298,7 @@ As final preparation steps we sort the BAM file by genomic position, something t
 
 To speed up access to the BAM file (and as a requirement of downstream tools) we index the BAM file, once again using samtools:
 
-	samtools index na12878_sorted
+	samtools index na12878_sorted.bam
 
 
 #### Assess the alignment [SCREENCAST]
@@ -309,7 +309,7 @@ Let's take a look at how bwa ended up aligning our reads to the reference chromo
 
 In the meantime, prepare the data for viewing. You will need the alignment in BAM format, the corresponding index file (*.bai) and the chromosome 20 reference sequence which you will also have to index:
 
-	samtools faidx XXX
+	samtools faidx chr20.fa
 
 Import these three files into IGV, starting with the reference chromosome ('Genomes', 'Load Genome from file') and followed by the alignment ('File', 'Load from file'). This assumes you are still running all commands in the `/mnt/ngs` directory, i.e., the folder that is shared with your host operating system.
 
@@ -351,6 +351,7 @@ In principle FreeBayes only needs a reference in FASTA format and the BAM-format
 	cd ..
 	mkdir variants
 	mv alignments/chr20.fa variants/
+	mv alignments/chr20.fa.fai variants/
 	mv alignments/na12878_sorted.* variants/
 
 > Might have to copy instead if IGV has a lock on these
@@ -399,7 +400,7 @@ chr20	61275	.	T	C	0.000359121	.	AB=0;ABP=0;AC=0;AF=0;AN=2;AO=2;CIGAR=1X;DP=3;DPB
 chr20	61289	.	A	C	0.00273171	.	AB=0;ABP=0;AC=0;AF=0;AN=2;AO=3;CIGAR=1X;DP=4;DPB=4;DPRA=0;EPP=3.73412;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=60;NS=1;NUMALT=1;ODDS=7.94838;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=15;QR=40;RO=1;RPP=9.52472;RPPR=5.18177;RUN=1;SAF=1;SAP=3.73412;SAR=2;SRF=0;SRP=5.18177;SRR=1;TYPE=snp	GT:DP:RO:QR:AO:QA:GL	0/0:4:1:40:3:15:-0.79794,0,-3.39794
 ```
 
-These columsn are relatively straightforward and represent the information we have about a predicted variation. CHROM and POS provide the config information and position where the variation occurs. ID is the dbSNP rs identifier (after we annotated the file) or a `.` if the variant does not have a record in dbSNP based on its position. REF and ALT represent the genotype at the reference and in the sample, always on the foward strand. 
+These columns are relatively straightforward and represent the information we have about a predicted variation. CHROM and POS provide the config information and position where the variation occurs. ID is the dbSNP rs identifier (after we annotated the file) or a `.` if the variant does not have a record in dbSNP based on its position. REF and ALT represent the genotype at the reference and in the sample, always on the foward strand. 
 
 QUAL then is the Phred scaled probablity that the observed variant exists at this site. It's again at a scale of -10 * log(1-p), so a value of 10 indicates a 1 in 10 chance of error, while a 100 indicates a 1 in 10^10 chance. Ideally you would need nothing else to filter out bad variant calls, but in reality we still need to filter on multiple other metrics. which we will describe in the next module. If the FILTER field is a `.` then no filter has been applied, otherwise it will be set to either PASS or show the (quality) filters this variant failed. 
 
