@@ -174,13 +174,15 @@ Keep track of where the output ends up if not mentioned explicitly in the comman
 
 For our data set we will trim off a standard adapter from the 3'-ends of our reads. Cutadapt can handle paired-end reads in one pass (see the documentation for details). While you can run cutadapt on the paired reads separately it is highly recommended to process both files at the same time so cutadapt can check for problems in the input data. The `-p` / `--paired-output` flag ensures that cutadapt checks for proper pairing of your data and will raise an error if read names in the files do not match. It also ensures that the paired files remain synchronized if the filtering and trimming ends up in one read being discarded -- cutadapt will remove the matching paired read from the second file, too.
 
+cutadapt is very flexible and can handle multiple adapters in one pass (in the same or different position), take a look at the excellent documentation. It is even possible to trim more than one adapter from a given read though at this point you might want to go back to the experimental design. The cutadapt commands for adaptor trimming and quality trimming are provided below. **Do not run this code.** 
+
+
 	cutadapt --format=fastq -a AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATC -o fq1_tmp.fq -p fq2_tmp.fq reads.end1.fq reads.end2.fq > cutadapt.log
 	cutadapt --quality-cutoff=5 --format=fastq -a AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATC -o fq1_trimmed.fq -p fq2_trimmed.fq fq1_tmp.fq fq2_tmp.fq > cutadapt2.log
 	rm fq1_tmp.fq fq2_tmp.fq
 
-cutadapt is very flexible and can handle multiple adapters in one pass (in the same or different position), take a look at the excellent documentation. It is even possible to trim more than one adapter from a given read though at this point you might want to go back to the experimental design.
 
-Since the adapter sequences are prone to errors while typing them in we have provided you with a small shell script in your home directory (`cut.sh`) that you can apply:
+Since the adapter sequences are prone to errors while typing them in we have provided you with a small shell script in your home directory (`cut.sh`) that you can apply. To run the shell script, type in the commands below:
 
 	mv ~/cut.sh
 	less cut.sh
@@ -291,7 +293,7 @@ Lastly, to speed up processing we will need to use SAMtools to convert the SAM f
 	samtools --version
 	samtools view -Sb -o na12878.bam na12878_marked.sam
 
-As a sidenote, samblaster and many other tools can read from standard input and write to standard out and can thus be easily inserted into a very simple 'pipeline'. For example:
+As a sidenote, samblaster and many other tools can read from standard input and write to standard out and can thus be easily inserted into a very simple 'pipeline'. The code below is a pipeline example of the last few commands that we just ran. Since we have already run this and have our bam file generated, you **do not need to run this code.** 
 
 	bwa mem -M chr20.fa final1.fastq final2.fastq | samblaster | samtools view -Sb - > na12878.bam
 
@@ -554,23 +556,64 @@ As you can see snpEff added a fair amount of additional information into the 'AN
 
 	cat na12878_annot_snpEff.vcf | grep HIGH | wc -l
 
-That's more than 500 high-impact variants in just one chromosome of a healthy indivdual. snpEff creates HTML summaries as part of it's output, so navigate to the mounted directory on your host OS and open the `snpEff_summary` file with a web browser.
+That's more than 500 high-impact variants in just one chromosome of a healthy individual. snpEff creates HTML summaries as part of it's output, so navigate to the mounted directory on your host OS and open the `snpEff_summary` file with a web browser.
 
-> Quick scan through the list. Number of variants, what kind of base changes, how there are no calls in the centromer region. 
+> Quick scan through the list. Number of variants, what kind of base changes, how there are no calls in the centromere region. 
 
 
 ### Prioritizing variants
 
 As you'll quickly notice handling variant annotation in this format is quiet cumbersome. Frameworks such as [GEMINI](http://gemini.readthedocs.org/en/latest/) have been developed to support an interactive exploration of variant information in the context of genomic annotations. 
 
-GEMINI (GEnome MINIng) can import VCF files (and an optional [PED file](), automatically annotating them in the process and storing them in a relational database that can then be queried.
- 
-Using the GEMINI framework begins by loading a VCF file (and an optional PED file) into a database. Each variant is automatically annotated by comparing it to several genome annotations from source such as ENCODE tracks, UCSC tracks, OMIM, dbSNP, KEGG, and HPRD. All of this information is stored in portable SQLite database that allows one to explore and interpret both coding and non-coding variation using “off-the-shelf” tools or an enhanced SQL engine.
+GEMINI (GEnome MINIng) can import VCF files (and an optional [PED file](http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml#ped), automatically annotating them with genome annotations from sources such as ENCODE tracks, OMIM, dbSNP etc, and storing them in a relational database that can then be queried. 
 
- As the annotation files requires for this take multiple GBs of download we start with a pre-loaded database (which, at 1.5GB, is still fairly large).
+The annotated VCF file (in this case annotated by VEP) is loaded into a database (.db) with external annotations and computing additional population genetics statistics that support downstream analyses. As the annotation files required for this take multiple GBs of download we start with a pre-loaded database. The code for loading the database is provided below, but you can **skip this step**.
+
+	gemini load -v dominant.vcf -t VEP -p dominant.ped --cores 4 dominant.db  
 
 
-> Meeta, over to you: [Aaron's Gemini tutorial](http://quinlanlab.org/tutorials/cshl2013/gemini.html). Note, the database is currently not available. I've reached out to Aaron and will chase him if I don't hear back by tomorrow.
+The database that was generated for this exercise `dominant.db` is located in your home directory. Move it over to your current directory:
+
+	mv ~/dominant.db .
+
+
+When we 'query', we are asking the database to report data that matches the requirements we provide. The query is formulated using a structured query language (SQL). As we go through a few examples you will start to become famililar with the language, but if you are interested in more details [sqlzoo](http://sqlzoo.net/wiki/SQL_Tutorial) has online tutorials describing the basics.
+
+To query GEMINI, we use the `gemini query` command. Following the command we provide the query. Data is stored in tables within the database and so our query needs to specify the table and the fields/columns within that table. To read more about the database schema you can read [here](http://gemini.readthedocs.org/en/latest/content/database_schema.html). Let's start by `select`ing the columnns chrom, start, end, gene `from` the variants table. Pipe `head` to the end of the command so only the first few lines are printed to screen. What information is displayed?
+
+	gemini query -q "select chrom, start, end, gene from variants" dominant.db | head 
+
+Adding in the `where` clause allows us to select specific rows in the table. Which variants in the table are indels? This time we will re-direct the results to file with `>` .
+
+	gemini query -q "select chrom, start, end, gene from variants where type='indel' " dominant.db > all_snps.txt  
+
+All indels from the variants table (and the columns specified) are written to file. Try a `wc -l` on the filename; this is Unix command that returns to you the number of lines in the file. How many indels are there? Rather than printing rows from the table, you can also ask GEMINI to report the number of lines that match your query using `count()`. Since the count operation cannot take more than one field, we will put the wildcard character `*` to indicate any field.
+
+	gemini query -q "select count(*) from variants where type='indel' " dominant.db
+
+The number returned should match the value returned from `wc -l`. Let's try a few more queries using the `count()`. How many variants are SNPs?
+
+	gemini query -q "select count(*) from variants where type='snp' " dominant.db
+
+For some fields the value is not numeric or character, but is boolean. TRUE is equivalent to the value of 1, and FALSE is equivalent to the value of 0. Let's query a field that has boolean values. How many variants are exonic? Not exonic?
+
+	gemini query -q "select count(*) from variants where is_exonic = 1" dominant.db
+	gemini query -q "select count(*) from variants where is_exonic = 0" dominant.db
+
+How many variants are coding? Not coding?
+
+	gemini query -q "select count(*) from variants where is_coding = 1" dominant.db
+	gemini query -q "select count(*) from variants where is_coding = 0" dominant.db
+
+How many variants are novel with respect to dbSNP?
+
+	gemini query -q "select count(*) from variants where in_dbsnp = 0" dominant.db
+
+
+Queries can also be combined by using `and` to separate _multiple_ `where` clauses. For example, how many of the coding variants are SNPs?
+
+	gemini query -q "select count(*) from variants where is_coding = 1 and type='snp' " dominant.db
+
 
 
 #### Is this useful?
