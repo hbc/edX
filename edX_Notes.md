@@ -556,7 +556,14 @@ That's more than 500 high-impact variants in just one chromosome of a healthy in
 
 ### Prioritizing variants
 
-As you'll quickly notice handling variant annotation in this format is quiet cumbersome. Frameworks such as [GEMINI](http://quinlanlab.org/tutorials/cshl2013/gemini.html) have been developed to support an interactive exploration of variant information in the context of genomic annotations. GEMINI can import VCF files, automatically annotating them in the process and storing them in a relational database that can then be queried. As the annotation files requires for this take multiple GBs of download we start with a pre-loaded database (which, at 1.5GB, is still fairly large).
+As you'll quickly notice handling variant annotation in this format is quiet cumbersome. Frameworks such as [GEMINI](http://gemini.readthedocs.org/en/latest/) have been developed to support an interactive exploration of variant information in the context of genomic annotations. 
+
+GEMINI (GEnome MINIng) can import VCF files (and an optional [PED file](), automatically annotating them in the process and storing them in a relational database that can then be queried.
+ 
+Using the GEMINI framework begins by loading a VCF file (and an optional PED file) into a database. Each variant is automatically annotated by comparing it to several genome annotations from source such as ENCODE tracks, UCSC tracks, OMIM, dbSNP, KEGG, and HPRD. All of this information is stored in portable SQLite database that allows one to explore and interpret both coding and non-coding variation using “off-the-shelf” tools or an enhanced SQL engine.
+
+ As the annotation files requires for this take multiple GBs of download we start with a pre-loaded database (which, at 1.5GB, is still fairly large).
+
 
 > Meeta, over to you: [Aaron's Gemini tutorial](http://quinlanlab.org/tutorials/cshl2013/gemini.html). Note, the database is currently not available. I've reached out to Aaron and will chase him if I don't hear back by tomorrow.
 
