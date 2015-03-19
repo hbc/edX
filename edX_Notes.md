@@ -174,12 +174,17 @@ Keep track of where the output ends up if not mentioned explicitly in the comman
 
 For our data set we will trim off a standard adapter from the 3'-ends of our reads. Cutadapt can handle paired-end reads in one pass (see the documentation for details). While you can run cutadapt on the paired reads separately it is highly recommended to process both files at the same time so cutadapt can check for problems in the input data. The `-p` / `--paired-output` flag ensures that cutadapt checks for proper pairing of your data and will raise an error if read names in the files do not match. It also ensures that the paired files remain synchronized if the filtering and trimming ends up in one read being discarded -- cutadapt will remove the matching paired read from the second file, too.
 
-	cutadapt -a CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT -o out1.fastq -p out2.fastq reads.end1.fastq reads.end2.fastq > cutadapt.log
-
-> This currently doesn't work -- only 10% of the adapter sequence gets removed. Need to troubleshoot with Rory.
-> The adaptor sequence is quite long to type out
+	cutadapt --format=fastq -a AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATC -o fq1_tmp.fq -p fq2_tmp.fq reads.end1.fq reads.end2.fq > cutadapt.log
+	cutadapt --quality-cutoff=5 --format=fastq -a AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATC -o fq1_trimmed.fq -p fq2_trimmed.fq fq1_tmp.fq fq2_tmp.fq > cutadapt2.log
+	rm fq1_tmp.fq fq2_tmp.fq
 
 cutadapt is very flexible and can handle multiple adapters in one pass (in the same or different position), take a look at the excellent documentation. It is even possible to trim more than one adapter from a given read though at this point you might want to go back to the experimental design.
+
+Since the adapter sequences are prone to errors while typing them in we have provided you with a small shell script in your home directory (`cut.sh`) that you can apply:
+
+	mv ~/cut.sh
+	less cut.sh
+	sh cut.sh > cutadapt.log
 
 We have used a pipe to re-direct cutadapt's output to a logfile. This will allow you to go back to your recorded logfiles to explore additional information, e.g., how many adapters were removed. Different tools have different ways of reporting log messages and you might have to experiment a bit to figure out what output to capture: you can redirect standard output with the `>` symbol which is equivalent to `1>` (standard out); other tools might require you to use `2>` to re-direct the standard error instead. 
 
@@ -201,7 +206,7 @@ There are a number of tools out there that specialize in read trimming, but luck
 > (70), (38), 8, -8, -25, -23, -20, -21, -15, -7  
 > The numbers in parentheses are not computed (because 8 is greater than zero), but shown here for completeness. The position of the minimum (-25) is used as the trimming position. Therefore, the read is trimmed to the first four bases, which have quality values 41, 40, 25, 27.
 
-	cutadapt -q 20 -o final1.fastq -p final2.fastq out1.fastq out2.fastq > cutadapt_qual.log
+	cutadapt -q 20 -o final1.fastq -p final2.fastq fq1_trimmed.fq fq2_trimmed.fq > cutadapt_qual.log
 	less cutadapt_qual.log
 
 After you have filtered your data generate another `FASTQC` quality report and compare the report to your previous one.
@@ -235,7 +240,7 @@ For the actual alignment we will need our chr20 reference sequence and the trimm
 
 	cd ..  
 	mkdir alignment
-	mv data/final/final*.fastq alignment/
+	mv data/final*.fastq alignment/
 	mv data/chr20.fa alignment/
 	cd alignment
 
@@ -247,7 +252,7 @@ With the index in place we can align the reads using BWA's _Maximal Exact Match_
 
 > Confirm that BWA creates SAM output. bwa  # version?
 	
-	bwa mem -M chr20.fa final1.fastq final2.fastq > bwa.err > na12878.sam
+	bwa mem -M chr20.fa final1.fastq final2.fastq 2> bwa.err > na12878.sam
 	ls -alih
 
 > Take a look at the output file. Note it’s size relative to FASTQ. How long did it take to run? Now extrapolate to how long you would expect this tool to run when mapping to the entire genome (approximately). What about using whole genome data instead of whole exome?
@@ -580,6 +585,12 @@ In addition, sequencing errors and systematic changes to sample materials as par
 > Short video to remind them what they achieved so far. Lead into closing sections.
 
 
+## Advanced topics
+
+### Calling variants in a population
+
+FreeBayes can run on individual samples or a collection of samples from many different individuals from the same family or general population. It leverages information found across the whole data set to improve confidence in genotype calls in individual samples. In short, if your study has data from multiple individuals it is almost always a good idea to run FreeBayes on all of them at the same time. 
+
 ## A word on data management & reproducibility
 
 
@@ -596,20 +607,11 @@ In addition, sequencing errors and systematic changes to sample materials as par
 > * http://www.cdc.gov/genomics/public/features/science.htm  
 > * http://software-carpentry.org/v5/novice/git/index.html  
 
-## Advanced topics
-
-### Calling variants in a population
-
-FreeBayes can run on individual samples or a collection of samples from many different individuals from the same family or general population. It leverages information found across the whole data set to improve confidence in genotype calls in individual samples. In short, if your study has data from multiple individuals it is almost always a good idea to run FreeBayes on all of them at the same time. 
-
-### Somatic variant calls
-
-> Additional challenges: tumor/normal, purity, and SVs (next) 
-
-### Structural variant calls
-
-> SVs, CNVs, impact on variant calls
 
 ### Workflow systems
 
-> bpipe, bcbio
+As your data analysis needs grow more complex you will need to move away from typing commands in a shell environment. The standard bioinformatics behaviour is to write lots of shell scripts that pipe the output of one workflow step into the output of the next script, but that tends to get messy fast. Logfiles get messed up, it becomes difficult to follow naming conventions, and it is unclear how or where to restart a run that failed halfway through the process.
+
+At the very least consider frameworks such as [bpipe](https://github.com/ssadedin/bpipe) which come with all kinds of goodies: automatic renaming of files, log file generation, the ability to resume failed runs and interfaces to most cluster resource managers.
+
+Beyond that frameworks such as [SpeedSeq](https://github.com/cc2qe/speedseq) and [bcbio](https://bcbio-nextgen.readthedocs.org/) provide additional flexibility: they install tools and references for you and simply require high level configuration files to drive the best practice analysis of your DNA- and RNA-Seq data. This helps tremendously when it comes to making your analysis reproducible and keeping tools and workflows current. Frameworks such as bcbio also come with support for just about every cluster scheduler as well as the ability to deploy the whole workflow on Amazon's AWS environment.
