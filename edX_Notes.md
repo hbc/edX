@@ -611,7 +611,7 @@ Queries can also be combined by using `and` to separate _multiple_ `where` claus
 
 	gemini query -q "select count(*) from variants where is_coding = 1 and type='snp' " dominant.db
 
-How many variants are rare and in a disease-associated gene?
+How many variants are rare _and_ in a disease-associated gene?
 
 	gemini query -q "select count(*) from variants where clinvar_disease_name is not NULL and aaf_esp_ea <= 0.01" dominant.db
 	
@@ -626,17 +626,17 @@ Genotype information (genotype, depth, and genotype quality) for each variant is
 
 For the rare variants, let's get the genotype for subject 4805 and the depth and quality of aligned sequence so that we can assess the confidence in the genotype:
 
-	gemini query -q "select gene, ref, alt, gts.1805, gt_depths.1805, gt_quals.1805 from variants where aaf_esp_ea <= 0.01" --header dominant.db | head
+	gemini query -q "select gene, ref, alt, gts.4805, gt_depths.1805, gt_quals.1805 from variants where aaf_esp_ea <= 0.01" --header dominant.db | head
 
 
 If we wanted to display information for _all samples_, rather than typing out each subjectID we could just use the wildcard character (`*`). There are many flavours of the wildcard operator that can be applied to make more complex queries (i.e. any, all, none), but is beyond the scope of this course. We encourage you to read the [documentation](http://gemini.readthedocs.org/en/latest/content/querying.html#selecting-sample-genotypes-based-on-wildcards) for more detail. 
 
 
-Often we want to focus only on variants where a given sample has a specific genotype (e.g., looking for homozygous variants in family trios). In GEMINI we cannot directly do this in the query, but the `gemini query tool` has an option called `--gt-filter` that allows one to specify filters to apply to the returned rows. The filter can be applied to any of the genotype information stored.
+Often we want to focus only on variants where a given sample has a specific genotype (e.g., looking for homozygous variants in family trios). In GEMINI we cannot directly do this in the query, but the `gemini query tool` has an option called `--gt-filter` that allows one to specify filters to apply to the returned rows. [The filter](http://gemini.readthedocs.org/en/latest/content/querying.html#gt-filter-filtering-on-genotypes) can be applied to any of the genotype information stored. The wildcard can be combined with the filter using the syntax `--gt-filters (COLUMN).(SAMPLE_WILDCARD).(SAMPLE_WILDCARD_RULE).(RULE_ENFORCEMENT)`. 
 
-**Variant statistics**
-Get some basic variant statistics
+See an example below where we report genotypes of variants in subject 4805 that have high quality (aligned depth >=50) genotypes in all samples.
 
+	gemini query -q "select gene, ref, alt, gts.4805 from variants" --gt-filter "(gt_depths).(*).(>=50).(all)" --header dominant.db | head
 
 **Built-in tools**
 
