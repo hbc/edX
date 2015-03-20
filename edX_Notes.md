@@ -578,7 +578,7 @@ The database that was generated for this exercise `dominant.db` is located in yo
 
 	mv ~/dominant.db .
 
-**Querying third-party annotations**
+**Querying the database**
 
 When we 'query', we are asking the database to report data that matches the requirements we provide. The query is formulated using a structured query language (SQL). As we go through a few examples you will start to become famililar with the language, but if you are interested in more details [sqlzoo](http://sqlzoo.net/wiki/SQL_Tutorial) has online tutorials describing the basics.
 
