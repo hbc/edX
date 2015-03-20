@@ -567,6 +567,8 @@ As you'll quickly notice handling variant annotation in this format is quiet cum
 
 GEMINI (GEnome MINIng) can import VCF files (and an optional [PED file](http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml#ped), automatically annotating them with genome annotations from sources such as ENCODE tracks, OMIM, dbSNP etc, and storing them in a relational database that can then be queried. 
 
+**Loading the database**
+
 The annotated VCF file (in this case annotated by VEP) is loaded into a database (.db) with external annotations and computing additional population genetics statistics that support downstream analyses. As the annotation files required for this take multiple GBs of download we start with a pre-loaded database. The code for loading the database is provided below, but you can **skip this step**.
 
 	gemini load -v dominant.vcf -t VEP -p dominant.ped --cores 4 dominant.db  
@@ -576,10 +578,11 @@ The database that was generated for this exercise `dominant.db` is located in yo
 
 	mv ~/dominant.db .
 
+**Querying third-party annotations**
 
 When we 'query', we are asking the database to report data that matches the requirements we provide. The query is formulated using a structured query language (SQL). As we go through a few examples you will start to become famililar with the language, but if you are interested in more details [sqlzoo](http://sqlzoo.net/wiki/SQL_Tutorial) has online tutorials describing the basics.
 
-To query GEMINI, we use the `gemini query` command. Following the command we provide the query. Data is stored in tables within the database and so our query needs to specify the table and the fields/columns within that table. To read more about the database schema you can read [here](http://gemini.readthedocs.org/en/latest/content/database_schema.html). Let's start by `select`ing the columnns chrom, start, end, gene `from` the variants table. Pipe `head` to the end of the command so only the first few lines are printed to screen. What information is displayed?
+To query GEMINI, we use the `gemini query` command. Following the command we provide the query. Data is stored in tables within the database and so our query needs to specify the table and the fields/columns within that table. Read more about the database schema on the GEMINI [website](http://gemini.readthedocs.org/en/latest/content/database_schema.html). Let's start by `select`ing the columnns chrom, start, end, gene `from` the variants table. Pipe `head` to the end of the command so only the first few lines are printed to screen. What information is displayed?
 
 	gemini query -q "select chrom, start, end, gene from variants" dominant.db | head 
 
@@ -591,7 +594,7 @@ All indels from the variants table (and the columns specified) are written to fi
 
 	gemini query -q "select count(*) from variants where type='indel' " dominant.db
 
-The number returned should match the value returned from `wc -l`. Let's try a few more queries using the `count()`. How many variants are SNPs?
+The number returned should match the value returned from `wc -l`. Let's try a few more queries using the `count()` operation. How many variants are SNPs?
 
 	gemini query -q "select count(*) from variants where type='snp' " dominant.db
 
@@ -600,19 +603,43 @@ For some fields the value is not numeric or character, but is boolean. TRUE is e
 	gemini query -q "select count(*) from variants where is_exonic = 1" dominant.db
 	gemini query -q "select count(*) from variants where is_exonic = 0" dominant.db
 
-How many variants are coding? Not coding?
+The `count()` operation can also be combined with `group by` so rather than counting all instances, GEMINI will give us a breakdown of numbers per category. The impact field has multiple categories (e.g., nonsynonymous, stop-gain, etc.). How many variants are there for each type of variant impact ?
 
-	gemini query -q "select count(*) from variants where is_coding = 1" dominant.db
-	gemini query -q "select count(*) from variants where is_coding = 0" dominant.db
-
-How many variants are novel with respect to dbSNP?
-
-	gemini query -q "select count(*) from variants where in_dbsnp = 0" dominant.db
-
+	gemini query -q "select impact, count(*) from variants group by impact" dominant.db
 
 Queries can also be combined by using `and` to separate _multiple_ `where` clauses. For example, how many of the coding variants are SNPs?
 
 	gemini query -q "select count(*) from variants where is_coding = 1 and type='snp' " dominant.db
+
+How many variants are rare and in a disease-associated gene?
+
+	gemini query -q "select count(*) from variants where clinvar_disease_name is not NULL and aaf_esp_ea <= 0.01" dominant.db
+	
+List those genes by changing the `count()` operation to the appropriate filed name:
+
+	gemini query -q "select gene  from variants where clinvar_disease_name is not NULL and aaf_esp_ea <= 0.01" dominant.db
+
+**Querying genotype information**
+
+The above examples illustrate _ad hoc_ queries that do not account or filter upon the genotypes of individual samples. 
+Genotype information (genotype, depth, and genotype quality) for each variant is tored in GEMINI using a slightly different format and so the syntax for accessing it also altered. To retrieve the alleles for a given sample one would add `gts.subjectID` to the `select` statement. For all other information the prefixes (followed by subject ID) are as follows: `gt_types`, `gt_depths`, `gt_quals`. Try the following query and  add in `--header` to keep track of what each column refers to. We'll also pipe to `head` so only the first few lines get written to screen.
+
+For the rare variants, let's get the genotype for subject 4805 and the depth and quality of aligned sequence so that we can assess the confidence in the genotype:
+
+	gemini query -q "select gene, ref, alt, gts.1805, gt_depths.1805, gt_quals.1805 from variants where aaf_esp_ea <= 0.01" --header dominant.db | head
+
+
+If we wanted to display information for _all samples_, rather than typing out each subjectID we could just use the wildcard character (`*`). There are many flavours of the wildcard operator that can be applied to make more complex queries (i.e. any, all, none), but is beyond the scope of this course. We encourage you to read the [documentation](http://gemini.readthedocs.org/en/latest/content/querying.html#selecting-sample-genotypes-based-on-wildcards) for more detail. 
+
+
+Often we want to focus only on variants where a given sample has a specific genotype (e.g., looking for homozygous variants in family trios). In GEMINI we cannot directly do this in the query, but the `gemini query tool` has an option called `--gt-filter` that allows one to specify filters to apply to the returned rows. The filter can be applied to any of the genotype information stored.
+
+**Variant statistics**
+Get some basic variant statistics
+
+
+**Built-in tools**
+
 
 
 
