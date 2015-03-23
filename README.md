@@ -4,8 +4,7 @@ Course materials for the [edX Data Analysis for Genomics](https://courses.edx.or
 
 * Introduction to sequencing
 * Introduction to re-sequencing studies
-* The command line
-* Using VirtualBox
+* The command line & using VirtualBox
 * Resequencing workflow
 * Quality control
 * Read trimming and filtering
@@ -14,7 +13,8 @@ Course materials for the [edX Data Analysis for Genomics](https://courses.edx.or
 * VCF filtering and annotation
 * Exploring VCFs with GEMINI
 
-### Authors
+
+## Authors
 
 * Oliver Hofmann
 * Shannan Ho Sui
@@ -24,7 +24,7 @@ Course materials for the [edX Data Analysis for Genomics](https://courses.edx.or
 * Aaron Quinlan (Gemini tutorial)
 * Jessica Chong (Gemini case studies)
 
-### Attributions
+## Attributions
 
 This course borrows heavily from the [FreeBayes tutorial](http://clavius.bc.edu/~erik/CSHL-advanced-sequencing/freebayes-tutorial.html) developed by Erik Garrison and course materials from [UC Davis](http://training.bioinformatics.ucdavis.edu/), and other online courses such as the [Software Carpentry materials](http://software-carpentry.org/). 
 
