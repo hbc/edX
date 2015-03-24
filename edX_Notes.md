@@ -1,4 +1,4 @@
-# Introduction to whole genome sequencing
+# Case study: Variant Discovery and Genotyping
 
 This session provides a basic introduction to conducting a re-sequencing analysis using command-line tools to identify [single nucleotide polymorphims](http://ghr.nlm.nih.gov/handbook/genomicresearch/snp) (SNPs) and small insertion or deletions (InDels). We will be retracing all of the steps required to get from an Illumina FASTQ sequence file received from a sequencing facility as part of a genome sequence analysis all the way to germline variant calls and variant prioritization. As part of this module we will also discuss approaches to test for changes in structural variation, explore differences between germline and somatic variant calling, and provide an overview on how to best scale the approach when handling much larger sample sets. 
 
