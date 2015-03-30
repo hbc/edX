@@ -739,7 +739,7 @@ See an example below where we report genotypes of variants in subject 4805 that 
 
 GEMINI also has a number of [built-in tools](http://gemini.readthedocs.org/en/latest/content/tools.html#) which incorporates the pedigree structure provided in form of a PED file. Using this information we can go a step further and query within a single family to identify disease-causing or disease-associated genetic variants reliably from the broader background of variants. In our example we will make use of the `autosomal_dominant` tool to query the trio of samples that we have been working with thus far. This tool is useful for identifying variants that meet an autosomal dominant inheritance pattern. The reported variants will be restricted to those variants having the potential to impact the function of affecting protein coding transcripts.
 
-Our PED file indicates that within our trio, both mother and son are affected. Since we have only one of the parents to be affected, the tool will report variants where both the affected child and the affected parent are heterozygous. We will query and limit the attributes returned by using the --columns option.
+Our PED file indicates that within our trio, both mother and son are affected. Since we have only one of the parents to be affected, the tool will report variants where both the affected child and the affected parent are heterozygous. We will query and limit the attributes returned by using the `--columns` option.
 
 	gemini autosomal_dominant dominant.db --columns "chrom, ref, alt, gene, impact"| head
 
