@@ -668,7 +668,7 @@ The database that was generated for this exercise `dominant.db` is located in yo
 
 	mv ~/gemini/dominant.db .
 
-We will be using this database to look for variants that are likely to be associated with a dominant disease next.
+The database contains variant call information for a single family of three individuals (trio). In this family, both mother and son are affected by a condition called hypobetalipoproteinemia, an autosomal dominant disorder. We will be using this database to look for variants that are likely to be associated with the disorder towards the end of this section. First, we will start with some simple queries and filters.
 
 
 #### Querying the database
@@ -737,7 +737,18 @@ See an example below where we report genotypes of variants in subject 4805 that 
 
 #### Disease gene hunting
 
-XXXTBA
+GEMINI also has a number of [built-in tools](http://gemini.readthedocs.org/en/latest/content/tools.html#) which incorporates the pedigree structure provided in form of a PED file. Using this information we can go a step further and query within a single family to identify disease-causing or disease-associated genetic variants reliably from the broader background of variants. In our example we will make use of the `autosomal_dominant` tool to query the trio of samples that we have been working with thus far. This tool is useful for identifying variants that meet an autosomal dominant inheritance pattern. The reported variants will be restricted to those variants having the potential to impact the function of affecting protein coding transcripts.
+
+Our PED file indicates that within our trio, both mother and son are affected. Since we have only one of the parents to be affected, the tool will report variants where both the affected child and the affected parent are heterozygous. We will query and limit the attributes returned by using the --columns option.
+
+	gemini autosomal_dominant dominant.db --columns "chrom, ref, alt, gene, impact"| head
+
+The first few columns that are returned, include family information, genotype and phenotype for each individual. All other columns are the same fields we have been using above in our examples. We can filter results using the `--filter` option which serves as the `where` clause that we had been using previously. For example, we could seacrh for only varaints of high impact:
+
+	gemini autosomal_dominant dominant.db --columns "chrom, ref, alt, gene, impact"
+	--filter "impact_severity = 'HIGH'" | head
+
+In order to eliminate less confident genotypes, we can add the `-d [0]` option to enforce a minimum sequence depth for each sample (default is zero). Additionally, if we had mutliple families in our dataset, we could specify to GEMINI the minimum number of families for the variant to be present in `--min-kindreds` or we can select the specific families we want to query `--families`.
 
 
 #### Is this useful?
