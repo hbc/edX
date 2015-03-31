@@ -56,10 +56,54 @@ I have run into several cases where vcffilter just crashes. Could replace releva
 
 ## Attributions
 
+Attributions for images where no URL is provided on the slide. All photographs courtesy of Flickr Creative Commons (only licenses which allow modifications and derivative use); images are screenshots from HBC work unless stated otherwise.
+
+
 **Title Slide:**
 
 * Ethernet, Bob Mical, https://www.flickr.com/photos/small_realm/14186949118
 * DNA, Nathan Nelson, https://www.flickr.com/photos/mybigtrip/239370169
+
+**Genomics medicine:**
+
+* Karyotype, Can H., https://www.flickr.com/photos/47988426@N08/8252270882
+
+**Exome sequencing:**
+
+* Exome view in IGV, test data screenshot
+
+**Scope:**
+
+* Blackboard, stop that pigeon!, https://www.flickr.com/photos/25312309@N05/2828744067
+
+**Introduction to Sequencing Technologies:**
+
+* BGI Sequencing Center, cesar harada, https://www.flickr.com/photos/worldworldworld/11873065773
+
+**Illumina slides:**
+
+* Taken from the UC Davis High Throughput Sequencing Fundamentals lecture, http://training.bioinformatics.ucdavis.edu/docs/2014/09/september-2014-workshop/Monday_JF_HTS_lecture.html
+
+**Sequencing by synthesis:**
+
+* From Wikipedia, CC 3.0 license, http://en.wikipedia.org/wiki/File:Sequencing_by_synthesis_Reversible_terminators.png
+* Bioinformatics, CC 3.0 license, http://bioinformatics.oxfordjournals.org/content/25/17/2194.abstract
+
+**IonTorrent:**
+
+* EBI Training Course materials, https://www.ebi.ac.uk/training/online/course/ebi-next-generation-sequencing-practical-course/what-next-generation-dna-sequencing/ion-torre
+
+**PacBio:**
+
+* Nature Review Genetics, http://www.nature.com/nrg/journal/v11/n1/fig_tab/nrg2626_F4.html
+
+**Introduction to Resequencing:**
+
+* Alineando secuencias (2), Shaury Nash, https://www.flickr.com/photos/shaury/2653833040
+
+**A quick orientation:**
+
+* Wikimedia, http://commons.wikimedia.org/wiki/File:UCSC_human_chromosome_colours.png
 
 
 
