@@ -634,7 +634,7 @@ Another typical annotation involves assessing the _impact_ of the identified var
 
 Normally you would have to download the databases matching your genome prior to annotation (or have snpEff do it automatically for you), but we included a pre-installed database for hg19 with the VM:
 
-	snpEff -Xmx2G -i vcf -o vcf hg19 na12878_annot.vcf > na12878_annot_snpEff.vcf
+	snpEff -Xmx2G -i vcf -o vcf -dataDir ~/reference/snpeff hg19 na12878_annot.vcf > na12878_annot_snpEff.vcf
 
 We use a `Java` parameter (`-Xmx2G`) to define the available memory. You might have to tweak this depending on your setup to use just `1G`. Note that for full-sized data set snpEff will require a minimum of 4GB of free RAM.
 
