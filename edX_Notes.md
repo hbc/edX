@@ -221,8 +221,7 @@ With these basic commands you have everything you need to finish the rest of thi
 
 ## A resequencing workflow
 
-As discussed we will be calling variants in a subset of the genome of [NA12878](https://catalog.coriell.org/0/sections/search/Sample_Detail.aspx?Ref=NA12878&product=DNA), annotating and filtering these for comparison with existing standards. To start with we need data to work with.
-
+As discussed we will be calling variants in a subset of the genome of [NA12878](https://catalog.coriell.org/0/sections/search/Sample_Detail.aspx?Ref=NA12878&product=DNA), annotating and filtering these for comparison with existing standards. To start with we need data to work with. The general workflow follows Erik Garrison’s excellent [FreeBayes tutorial](http://clavius.bc.edu/~erik/CSHL-advanced-sequencing/freebayes-tutorial.html) and you are encouraged to work through it at the end of the course to learn more about the involved methods. 
 
 ### Obtaining read data 
 

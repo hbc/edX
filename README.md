@@ -13,14 +13,14 @@ Course materials for the [edX Data Analysis for Genomics](https://courses.edx.or
 * VCF filtering and annotation
 * Exploring VCFs with GEMINI
 
-
 ## Authors
 
-* Oliver Hofmann
+* Oliver Hofmann (overall course design)
 * Shannan Ho Sui
 * Meeta Mistry
 * Radhika Khetani
 * Brad Chapman (building the VM)
+* Erik Garrison (all things FreeBayes and variant calling)
 * Aaron Quinlan (Gemini tutorial)
 * Jessica Chong (Gemini case studies)
 
