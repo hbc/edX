@@ -88,6 +88,16 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 * Day 117 - Lab Notebook Volume B, Sarah Cady, https://www.flickr.com/photos/sararah/2470656327
 
+**First step:**
+
+* Brian Yap, Blowing Questions, https://www.flickr.com/photos/yewenyi/7909176606
+
+
+
+Laddir Laddir, Pencil, https://www.flickr.com/photos/laddir/6249499550/
+
+
+
 **A quick orientation:**
 
 * Wikimedia, http://commons.wikimedia.org/wiki/File:UCSC_human_chromosome_colours.png
