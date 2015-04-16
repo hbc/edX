@@ -238,16 +238,17 @@ Then navigate to the standard UNIX directory where you can 'mount' filesystems a
 
 Finally, connect the shared folder to the newly created directory:
 
-	sudo mount -t vboxsf SHARENAME ngs
+	sudo mount -t vboxsf SHARENAME -o rw,uid=1000,gid=1000,umask=0000,dmode=777 ngs
 
 where `SHARENAME` is the folder share name you picked when setting up the VirtualBox shared folders (do not include the full path; the folder name alone will suffice). Try copying something into that shared folder on your desktop or laptop, then check if you can see it from the terminal:
 
 	ls -alih ngs/
 
-We will also require a reference genome for the alignment. We could align to the whole human genome, but since we are focusing on reads from chromosome 20 we will just get a copy of this chromosome. You have two options for getting this chromosome — either directly from the source at UCSC with the `wget` command, or by retrieving it from your home directory. To minimize the number of downloads we pre-packaged all files required for your homedirectory:
+We will also require a reference genome for the alignment. We could align to the whole human genome, but since we are focusing on reads from chromosome 20 we will just get a copy of this chromosome. You have two options for getting this chromosome — either directly from the source at UCSC with the `wget` command, or by retrieving it from your home directory. To minimize the number of downloads we pre-packaged all files required for your home directory. Let's move into the ngs directory and create a new directory top copy in the data:
 
 	cd ngs
-	cp ~/reference/chr20.fa .
+	mkdir data
+	cp ~/reference/chr20.fa data/
 
 If you are curious, this is how you would have gotten the data from UCSC:
 
@@ -260,11 +261,12 @@ Take a look at your reference chromosome using `less` or `head`. If this is the 
 	
 Next, grab the sequencing data. This would normally have been provided by a collaborator or your sequencing facility:
 
-	cp ~/sequence/reads* .
-	ls -alih reads*
+	cp ~/sequence/reads* data/
 	
-You should have two files in FASTQ format in your directory now — a single sample sequenced in paired-end mode.	
+You should have two files in FASTQ format in your directory now — a single sample sequenced in paired-end mode.	We can check by moving into the data directory and listing all files:
 
+	cd data
+	ls -alih reads*
 
 ### Quality Controls
 
@@ -468,9 +470,8 @@ In principle FreeBayes only needs a reference in FASTA format and the BAM-format
 
 	cd ..
 	mkdir variants
-	mv alignments/chr20.fa variants/
-	mv alignments/chr20.fa.fai variants/
-	mv alignments/na12878_sorted.* variants/
+	mv alignment/chr20.fa variants/
+	mv alignment/na12878_sorted.* variants/
 
 If you are getting an error message with the `mv` command it most likley means that you are still running IGV which is keeping a lock on these files. Just copy (`cp`) the files instead of moving them in this case. 
 
