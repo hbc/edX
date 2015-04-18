@@ -626,9 +626,13 @@ We will once again use bcftools, this time to associate the variants we called w
 
 	bcftools annotate -c ID -a dbsnp.138.chr20.vcf.gz na12878_q20.vcf.gz > na12878_annot.vcf
 
-Explore the file -- the previous 'unknown IDs' (the '.' annotation) has in all cases been replaced by an `rs` identifier that you can look up in the dbSNP database. This is not terribly surprising: NA12878 is one of the best-sequenced genomes, and short of true sequencing errors all variants are bound to be in public databases. An easy way to confirm that impression is once again via bcftools:
+Explore the file -- for a majority of the variants the previous 'unknown IDs' (the '.' annotation) has been replaced by an `rs` identifier that you can look up in the dbSNP database. This is not terribly surprising: NA12878 is one of the best-sequenced genomes, and short of true sequencing errors all variants are bound to be in public databases. An easy way to confirm that is to look at the newly generated file (scroll using the space bar):
 
-	bcftools view -i '%ID = "."' na12878_annot.vcf
+	less na12878_annot.vcf
+
+We can also check this using bcftools once again:
+
+	bcftools view -i '%ID = "."' na12878_annot.vcf | bcftools stats
 
 Another typical annotation involves assessing the _impact_ of the identified variants to distiginush between potentially harmless substituions and more severe changes that cause loss of function (truncations, change of splice events, etc.). A number of frameworks such as [ANNOVAR](http://www.openbioinformatics.org/annovar/) and [VEP](http://www.ensembl.org/info/docs/tools/vep/index.html) tackle this; here we will be using another popular framework, [snpEFF](http://snpeff.sourceforge.net/SnpEff_manual.html). The manual is more or less required reading to get the most out of snpEff, but in brief, snpEff takes predicted variants as input and annotates these with their likely effects based on external databases. 
 
@@ -646,9 +650,9 @@ As you can see snpEff added a fair amount of additional information into the 'AN
 
 	cat na12878_annot_snpEff.vcf | grep HIGH | wc -l
 
-That's more than 500 high-impact variants in just one chromosome of a healthy individual. snpEff creates HTML summaries as part of it's output, so navigate to the mounted directory on your host OS and open the `snpEff_summary` file with a web browser.
+That's a total of six high-impact variants in just one chromosome of a healthy individual. snpEff creates HTML summaries as part of it's output, so navigate to the mounted directory on your host OS and open the `snpEff_summary` file with a web browser.
 
-> Take a quick look throigh the results. Note the number of variants, what kind of base changes you see. Note how there are no variant calls in centromer regions. 
+> Take a quick look through the results. Note the number of variants, what kind of base changes you see. Note how there are no variant calls in centromer regions. 
 
 
 ### Prioritizing variants with GEMINI
