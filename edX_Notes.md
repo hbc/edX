@@ -144,6 +144,7 @@ Note – As we start learning more about manipulating files and directories, one
 
 So far we have learned to move files around, and do basic file and directory manipulations. Next we’ll learn about how to look at the content of a file. The commands, `cat`, `head` and `tail` will print the contents of the file onto the monitor. `cat` will print ALL the contents of a file onto your terminal window, so be aware of this for huge files. `head` and `tail` will show only the number of lines you want to see (default is 10 lines):
 
+	$ cd unix_exercise/
 	# cat = catenate, prints the whole file
 	$ cat readme.txt          
 	$ cd sequence/
@@ -176,45 +177,6 @@ Another way to handle output redirection are ‘pipes’. A pipe, represented by
 
 	$ cat genelist1_test1.txt genelist1_test2.txt | sort > genelist1_test_combined_sorted.txt       #sort = sorts data as you specify in the arguments, default is alphanumeric in ascending order
 	$ head genelist1_test_combined*			# the asterisk "*" is a wildcard and can be used in place of 1 or multiple characters
-
-### Permissions
-
-UNIX is a multiuser system, and to maintain privacy and security, most users can only access a small subset of all the files:
-
-* You are the owner of every file and directory that is under your home directory.
-* The system administrator (or sysadmin) or other users can determine what else you have access to.
-* Each file and directory has associated “permissions” for different types of access; reading, writing and executing (scripts or programs).
-* You are allowed to change the permissions of any file or directory you “own” and in some cases a file or a directory that you have access to as part of a “group” (co-ownership). 
-
-Take a look at what permissions have been set in your exercise directory:
-
-	$ ls -l /home/vagrant/unix_exercise/
-
-Or translated:
-
-* `d`: directory (or `-` if file); 
-* `r`: read permission; 
-* `w`: write permission; 
-* `x`: execute permission (or permission to `cd` if it is a directory); 
-* `-`: no permission.       
-
-The long string `drwxr-xr--` can be divided into `d` `rwx` `r-x` `r--`, and it means the following:
-
-* owner (u) has `rwx` read, write and execute permissions for the directory
-* group (g) has `r-x` only read and execute permissions for the directory
-* others (o) has `r--` only read permission for the directory
-
-How do you set or change these permissions? 
-
-	$ cd ../
-	$ chmod -R o-rwx sequence/     # others have no read, write or execute permissions for any this directory or any file within
-	$ ls -lh 
-	$ chmod u+rwx hello_world.sh
-	$ ls -lh
-	$ chmod -R 764 sequence/       # same as “chmod –R u+rwx,g+rw,o+r”. See man chmod if you are curious
-	$ ls -lh
-
-A “sticky bit” is applied to shared directories to protect files such that only the owner has the ability to change permissions. `chown` and `chgrp` are commands that let you change owner and groups respectively, but you need to start out with correct permissions to be able to execute these on a file/directory. For this course you should not have to change any read or write permissions, but as you acquire data from other users the ability to change permissions becomes important.
 
 With these basic commands you have everything you need to finish the rest of this module. Over time you will want to do additional things, and a good starting point to learn more are the [Software Carpentry course](http://software-carpentry.org/). As with everything else, the more you work in a command line environment the easier it gets. Avoid the temptation to fall back to your graphical user interface to create folders or move files, constant trial and error is worth it in the long run.
 
