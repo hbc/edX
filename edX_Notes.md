@@ -406,9 +406,11 @@ In the meantime, prepare the data for viewing. You will need the alignment in BA
 
 	samtools faidx chr20.fa
 
-Import these three files into IGV, starting with the reference chromosome ('Genomes', 'Load Genome from file') and followed by the alignment ('File', 'Load from file'). This assumes you are still running all commands in the `/mnt/ngs` directory, i.e., the folder that is shared with your host operating system.
+This assumes you are still running all commands in the `/mnt/ngs/` directory, i.e., the folder that is shared with your host operating system. All the files for the IGV exercise should be in the `/mnt/ngs/alignment/` directory within that shared directory.
 
-We will now add the BAM file to IGV, add the reference (chr20) and take a look around. Some of the concepts you should explore include:
+Import the two files, chr20.fa and na12878_sorted.bam, into IGV, starting with the reference chromosome ('Genomes', 'Load Genome from file') and followed by the alignment ('File', 'Load from file'). 
+
+Some of the concepts you should explore include:
 
 * Expanded / collapsed views
 * Color alignments (reads) by different attributes
