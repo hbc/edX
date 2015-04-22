@@ -5,7 +5,7 @@ Attributions for images where no URL is provided on the slide. All photographs c
 **Title Slide:**
 
 * Ethernet, Bob Mical, https://www.flickr.com/photos/small_realm/14186949118
-* DNA, Nathan Nelson, https://www.flickr.com/photos/mybigtrip/239370169
+* DNA, John Goode, https://www.flickr.com/photos/johnnieb/17200471/
 
 **Genomics medicine:**
 
@@ -17,11 +17,12 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 **Scope:**
 
-* Blackboard, stop that pigeon!, https://www.flickr.com/photos/25312309@N05/2828744067
+* Studying…, Clay Shonkwiler, https://www.flickr.com/photos/shonk/418180402
+
 
 **Introduction to Sequencing Technologies:**
 
-* BGI Sequencing Center, cesar harada, https://www.flickr.com/photos/worldworldworld/11873065773
+* Riding Shotgun, Steve Jurvetson, https://www.flickr.com/photos/jurvetson/57080968/
 
 **Illumina slides:**
 
@@ -29,8 +30,8 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 **Sequencing by synthesis:**
 
-* From Wikipedia, CC 3.0 license, http://en.wikipedia.org/wiki/File:Sequencing_by_synthesis_Reversible_terminators.png
-* Bioinformatics, CC 3.0 license, http://bioinformatics.oxfordjournals.org/content/25/17/2194.abstract
+* http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2734321/figure/F1/
+
 
 **IonTorrent:**
 
@@ -38,27 +39,25 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 **PacBio:**
 
-* Nature Review Genetics, http://www.nature.com/nrg/journal/v11/n1/fig_tab/nrg2626_F4.html
+* PacBio Press Kit, http://www.pacificbiosciences.com/news_and_events/mediakit/
 
 **Introduction to Resequencing:**
 
-* Alineando secuencias (2), Shaury Nash, https://www.flickr.com/photos/shaury/2653833040
+* DNA / Protein function finder from @WellcomeTrust @SangerInstitute @emblebi @YourGenome, Duncan Hull, https://www.flickr.com/photos/dullhunk/4422952630/
+
 
 **In an ideal world:**
 
-* The South 16, fiamh, https://www.flickr.com/photos/fiamh/3432988222/in/set-72157616637846826
+* Rainbow, Moyan Brenn, https://www.flickr.com/photos/aigle_dore/4516670863
 
 **Unix and the command line:**
 
-* SDFGH, Murilo Cardoso, https://www.flickr.com/photos/murilocardoso/3463934987
+* Keyboard, Tristan Schmurr, https://www.flickr.com/photos/kewl/5212626838
 
-**Is this useful?**
-
-* A shell script wants your job, jm3, https://www.flickr.com/photos/jm3/4814208649
 
 **Quality control and grooming**
 
-* haircut, Gal, https://www.flickr.com/photos/baboon/306056437/
+* Backyard Hair Cut, sean hobson, https://www.flickr.com/photos/seanhobson/4353671803
 
 **Illumina error sources:**
 
@@ -66,7 +65,7 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 **Alignment:**
 
-* Puzzle, NTVGene, https://www.flickr.com/photos/intvgene/370973576
+* Puzzled, Pratap Sankar, https://www.flickr.com/photos/gugugagaa/5378186359
 
 **What to align against:**
 
@@ -74,29 +73,24 @@ Attributions for images where no URL is provided on the slide. All photographs c
 
 **Marking duplicates:**
 
-* Solo, Thomas Leth-Olsen, https://www.flickr.com/photos/thomasletholsen/8064127235
+* 91 variations on a theme, Kevin Dooley, https://www.flickr.com/photos/pagedooley/3227848591
 
 **Identifying variation:**
 
-* FlickrFriday #15: Repetition - [Explored], elPadawan, https://www.flickr.com/photos/elpadawan/8710559553
+* répétition 2, olibac, https://www.flickr.com/photos/olibac/2354102486
 
 **Finding the right variants:**
 
-* Finding a needle in a haystack - that's what librarians are for, Marina Nordegraaf, https://www.flickr.com/photos/verbeeldingskr8/15748493025
+* A Needle in a Hay Stack, Michael Gil, https://www.flickr.com/photos/msvg/5143096005
 
 **Experimental design:**
 
-* Day 117 - Lab Notebook Volume B, Sarah Cady, https://www.flickr.com/photos/sararah/2470656327
+* Marcin Wichary, https://www.flickr.com/photos/mwichary/2635813162
 
 **First step:**
 
-* Brian Yap, Blowing Questions, https://www.flickr.com/photos/yewenyi/7909176606
-
-
-
-Laddir Laddir, Pencil, https://www.flickr.com/photos/laddir/6249499550/
-
-
+* 20141025 Pencils 068, John, https://www.flickr.com/photos/cygnus921/15628288442
+* Question Mark Graffiti, Bilal Kamoon, https://www.flickr.com/photos/bilal-kamoon/6835060992
 
 **A quick orientation:**
 
