@@ -594,7 +594,7 @@ Explore the file -- for a majority of the variants the previous 'unknown IDs' (t
 
 	less na12878_annot.vcf
 
-We can also check this using bcftools once again:
+You will observe some rows which still contain a '.' where other rows have been replaced with a dbSNP 'rs' identfier. We can also check this using bcftools once again (this step is optional):
 
 	bcftools view -i '%ID = "."' na12878_annot.vcf | bcftools stats
 
@@ -691,7 +691,7 @@ Genotype information (genotype, depth, and genotype quality) for each variant is
 
 For the rare variants, let's get the genotype for subject 4805 and the depth and quality of aligned sequence so that we can assess the confidence in the genotype:
 
-	gemini query -q "select gene, ref, alt, gts.4805, gt_depths.1805, gt_quals.1805 from variants where aaf_esp_ea <= 0.01" --header dominant.db | head
+	gemini query -q "select gene, ref, alt, gts.4805, gt_depths.4805, gt_quals.4805 from variants where aaf_esp_ea <= 0.01" --header dominant.db | head
 
 If we wanted to display information for _all samples_, rather than typing out each subjectID we could just use the wildcard character (`*`). There are many flavours of the wildcard operator that can be applied to make more complex queries (i.e. any, all, none), but is beyond the scope of this course. We encourage you to read the [documentation](http://gemini.readthedocs.org/en/latest/content/querying.html#selecting-sample-genotypes-based-on-wildcards) for more detail. 
 
@@ -705,18 +705,18 @@ See an example below where we report genotypes of variants in subject 4805 that 
 
 #### Disease gene hunting
 
-GEMINI also has a number of [built-in tools](http://gemini.readthedocs.org/en/latest/content/tools.html#) which incorporates the pedigree structure provided in form of a PED file. Using this information we can go a step further and query within a single family to identify disease-causing or disease-associated genetic variants reliably from the broader background of variants. In our example we will make use of the `autosomal_dominant` tool to query the trio of samples that we have been working with thus far. This tool is useful for identifying variants that meet an autosomal dominant inheritance pattern. The reported variants will be restricted to those variants having the potential to impact the function of affecting protein coding transcripts.
+GEMINI also has a number of [built-in tools](http://gemini.readthedocs.org/en/latest/content/tools.html#) which incorporates the pedigree structure provided in the form of a PED file. Using this information we can go a step further and query within a single family to identify disease-causing or disease-associated genetic variants reliably from the broader background of variants. In our example we will make use of the `autosomal_dominant` tool to query the trio of samples that we have been working with thus far. This tool is useful for identifying variants that meet an autosomal dominant inheritance pattern. The reported variants will be restricted to those variants having the potential to impact the function of affecting protein coding transcripts.
 
 Our PED file indicates that within our trio, both mother and son are affected. Since we have only one of the parents to be affected, the tool will report variants where both the affected child and the affected parent are heterozygous. We will query and limit the attributes returned by using the `--columns` option.
 
 	gemini autosomal_dominant dominant.db --columns "chrom, ref, alt, gene, impact"| head
 
-The first few columns that are returned, include family information, genotype and phenotype for each individual. All other columns are the same fields we have been using above in our examples. We can filter results using the `--filter` option which serves as the `where` clause that we had been using previously. For example, we could seacrh for only varaints of high impact:
+The first few columns that are returned include family information, genotype and phenotype for each individual. All other columns are the same fields we have been using above in our examples. We can filter results using the `--filter` option which serves as the `where` clause that we had been using previously. For example, we could search for only variants of high impact:
 
 	gemini autosomal_dominant dominant.db --columns "chrom, ref, alt, gene, impact"
 	--filter "impact_severity = 'HIGH'" | head
 
-In order to eliminate less confident genotypes, we can add the `-d [0]` option to enforce a minimum sequence depth for each sample (default is zero). Additionally, if we had mutliple families in our dataset, we could specify to GEMINI the minimum number of families for the variant to be present in `--min-kindreds` or we can select the specific families we want to query `--families`.
+In order to eliminate less confident genotypes, we can add the `-d [0]` option to enforce a minimum sequence depth for each sample (default is zero). Additionally, if we had mutliple families in our dataset, we could specify to GEMINI the minimum number of families for the variant to be present in using `--min-kindreds` or we can select the specific families we want to query using `--families`.
 
 
 #### Is this useful?
