@@ -739,21 +739,9 @@ FreeBayes can run on individual samples or a collection of samples from many dif
 
 ### A word on data management & reproducibility
 
-XXXTBA
+Data management is a very important aspect of any large-scale analysis like variant detection. There are various tools and best-practices descriptions available to help with this, e.g. [git](http://git-scm.com/) for version control and [this PLOS paper](http://www.ploscompbiol.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pcbi.1000424&representation=PDF) for ideas on best practices in computational biology.
 
-> Radhika, do you want to field this as part B of the Software Carpentry spiel?  
-> * Should use version control, Software Carpentry  
-> * For this course stick to basic management. See PLOS article.  
-> * Key to reproducibiity. Write everything down you do  
-> * Always write the code, results for at least one collaborator: your future self    
->   
-> **Resources:**  
-> * http://swcarpentry.github.io/slideshows/best-practices/index.html#slide-0  
-> * https://dl.dropboxusercontent.com/u/407047/Blog/Documents/literature/Introduction/PLoS%20Comput%20Biol%202009%20Noble.pdf  
-> * http://www.vox.com/2015/2/16/8034143/john-ioannidis-interview  
-> * http://www.cdc.gov/genomics/public/features/science.htm  
-> * http://software-carpentry.org/v5/novice/git/index.html  
-
+Data management ties in with the concept of Reproducibility in that the better your bookkeeping, the better you will be able to describe your methods and therefore make them more reproducible. 
 
 ### Workflow systems
 
