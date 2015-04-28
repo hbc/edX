@@ -26,8 +26,7 @@ Since we want you to be able to apply anything you learn in this module to your 
 We will be using a [‘Virtual Machine’](http://en.wikipedia.org/wiki/Virtual_machine) (VM) for this module to ensure everyone has access to the variety of methods and tools required for a whole genome re-sequencing analysis. While you might have access to the same software on a local server or cluster it still might be easier to use the VM as we have tested that the used versions work well together. We will guide you through the installation process in our screencast, but here are the URLs for you to follow along:
 
 * Download the virtual machine manager, VirtualBox, from [VirtualBox.org](https://www.virtualbox.org/), making sure you pick the right operating system for your laptop or desktop; install VirtualBox on your machine.
-* Download the [VM image](https://s3.amazonaws.com/edx-public-downloads/HarvardX/PH525_Files/edX_PH5
-25.6x_variant.ova) (~1 GB) to your local machine.
+* Download the [VM image](https://s3.amazonaws.com/edx-public-downloads/HarvardX/PH525_Files/edX_PH525.6x_variant.ova) (~1 GB) to your local machine.
 * Start VirtualBox and use `File` - `Import Appliance` from the menu, selecting the VM image you just downloaded. This will trigger a menu where you can change the Appliance settings. We recommend giving the VM as much memory as you can given your local machine (you won't need more than 4GB though). Start the import process.
 * With the import finished right click on the newly imported `edx_ngs` image in the list view and pick `Settings`. In the settings menu find the `Shared Folders` entry to add a disk drive share (the folder symbol with a green plus symbol). 
 * Pick a folder path on your local drive that you can access easily. This will be used to exchange data files and reports with your VM. Give it an easy to remember name (e.g., `ngs`) and tick the `auto-mount` box.
