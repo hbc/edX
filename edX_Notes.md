@@ -750,3 +750,6 @@ As your data analysis needs grow more complex you will need to move away from ty
 At the very least consider frameworks such as [bpipe](https://github.com/ssadedin/bpipe) which come with all kinds of goodies: automatic renaming of files, log file generation, the ability to resume failed runs and interfaces to most cluster resource managers.
 
 Beyond that frameworks such as [SpeedSeq](https://github.com/cc2qe/speedseq) and [bcbio](https://bcbio-nextgen.readthedocs.org/) provide additional flexibility: they install tools and references for you and simply require high level configuration files to drive the best practice analysis of your DNA- and RNA-Seq data. This helps tremendously when it comes to making your analysis reproducible and keeping tools and workflows current. Frameworks such as bcbio also come with support for just about every cluster scheduler as well as the ability to deploy the whole workflow on Amazon's AWS environment.
+__________________
+This module was partially sponsored by the Harvard Medical School Tools and Technology (TnT) Committee and Harvard NeuroDiscovery Center (HNDC).
+__________________ 
