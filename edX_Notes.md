@@ -29,7 +29,7 @@ We will be using a [‘Virtual Machine’](http://en.wikipedia.org/wiki/Virtual_
 * Download the [VM image](https://s3.amazonaws.com/edx-public-downloads/HarvardX/PH525_Files/edX_PH525.6x_variant.ova) (~1 GB) to your local machine.
 * Start VirtualBox and use `File` - `Import Appliance` from the menu, selecting the VM image you just downloaded. This will trigger a menu where you can change the Appliance settings. We recommend giving the VM as much memory as you can given your local machine (you won't need more than 4GB though). Start the import process.
 * With the import finished right click on the newly imported `edx_ngs` image in the list view and pick `Settings`. In the settings menu find the `Shared Folders` entry to add a disk drive share (the folder symbol with a green plus symbol). 
-* Pick a folder path on your local drive that you can access easily. This will be used to exchange data files and reports with your VM. Give it an easy to remember name (e.g., `ngs`) and tick the `auto-mount` box.
+* Pick a folder path on your local drive that you can access easily. This will be used to exchange data files and reports with your VM. Give it an easy to remember name (e.g., `ngs`) and tick the `auto-mount` box. Remove the shared folder which is available by default.
 * I would also recommend enabling the `Shared Clipboard` (`Bidirectional`) under the `General` section. Leave the settings dialog via the `OK` button.
 
 With these configurations complete you can start the VM by selecting it in the list and clicking on the `Start` button. The VM will start up and leave you at the login screen. For this course, please use the following user and password:
